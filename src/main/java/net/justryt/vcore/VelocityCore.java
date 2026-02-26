@@ -1,12 +1,16 @@
 package net.justryt.vcore;
 
 import com.google.inject.Inject;
+import com.velocitypowered.api.command.Command;
+import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
+import net.justryt.vcore.commands.BrigCommand;
+import net.justryt.vcore.commands.ping.PingCommand;
 import net.justryt.vcore.configuration.MainConfig;
 import net.justryt.vcore.listeners.ServerDecorator;
 import org.jetbrains.annotations.NotNull;
@@ -42,5 +46,13 @@ public class VelocityCore {
     @Subscribe
     public void onProxyInitialize(@NotNull ProxyInitializeEvent event) {
         server.getEventManager().register(this, new ServerDecorator(this));
+
+        final var commandManager = server.getCommandManager();
+
+        registerCommand(new PingCommand(this), commandManager);
+    }
+
+    private void registerCommand(@NotNull BrigCommand cmd, @NotNull CommandManager commandManager) {
+        commandManager.register(cmd.getCommandMeta(), (Command) cmd.getCommand());
     }
 }
