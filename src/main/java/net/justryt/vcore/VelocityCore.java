@@ -1,7 +1,6 @@
 package net.justryt.vcore;
 
 import com.google.inject.Inject;
-import com.velocitypowered.api.command.Command;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -53,6 +52,6 @@ public class VelocityCore {
     }
 
     private void registerCommand(@NotNull BrigCommand cmd, @NotNull CommandManager commandManager) {
-        commandManager.register(cmd.getCommandMeta(), (Command) cmd.getCommand());
+        commandManager.register(cmd.getCommandMeta(), cmd.getCommand());
     }
 }

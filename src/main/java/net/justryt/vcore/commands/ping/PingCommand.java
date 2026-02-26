@@ -1,10 +1,8 @@
 package net.justryt.vcore.commands.ping;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandMeta;
-import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import net.justryt.vcore.VelocityCore;
 import net.justryt.vcore.commands.BrigCommand;
@@ -18,10 +16,10 @@ public class PingCommand extends BrigCommand {
     }
 
     @Override
-    public LiteralCommandNode<CommandSource> getCommand() {
-        return BrigadierCommand
+    public BrigadierCommand getCommand() {
+        final var node = BrigadierCommand
                 .literalArgumentBuilder("ping")
-                .requires(src -> src instanceof Player && src.hasPermission("access.not-suspended"))
+                .requires(src -> src instanceof Player) // && src.hasPermission("access.not-suspended")
                 .executes(ctx -> {
                     final var player = (Player) ctx.getSource();
                     player.sendMessage(Component
@@ -29,6 +27,8 @@ public class PingCommand extends BrigCommand {
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();
+
+        return new BrigadierCommand(node);
     }
 
     @Override
